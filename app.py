@@ -1,6 +1,7 @@
 import streamlit as st
 from src.model import translate_text
 from src.database import save_translation
+from src.database import save_translation, get_history
 
 st.title("🌍 Language Translator AI")
 
@@ -23,3 +24,13 @@ if st.button("Translate"):
 
     st.subheader(f"{language} Translation")
     st.write(result)
+
+    st.divider()
+
+st.subheader("Translation History")
+
+history = get_history()
+
+st.table(
+    history
+)
