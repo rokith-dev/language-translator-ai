@@ -1,10 +1,12 @@
-from flask import Flask
+import streamlit as st
+from src.model import translate_text
 
-app = Flask(__name__)
+st.title("🌍 Language Translator AI")
 
-@app.route('/')
-def index():
-    return 'Hello from language-translator'
+text = st.text_area("Enter English Text")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if st.button("Translate"):
+    result = translate_text(text)
+
+    st.subheader("Tamil Translation")
+    st.write(result)
