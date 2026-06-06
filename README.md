@@ -103,6 +103,13 @@ The PDF contains:
 
 ---
 
+## 📸 Project Walkthrough
+
+📄 Click below to view all project screenshots:
+
+[👉 Open Project Screenshots PDF](./screenshots/language-translatorpdf.pdf)
+
+
 ## ⚙️ Installation
 
 Clone the repository:
