@@ -3,17 +3,23 @@ import streamlit as st
 from src.model import translate_text
 from src.database import save_translation, get_history
 from src.text_to_speech import text_to_speech
-from src.file_handler import read_pdf
+from src.file_handler import read_pdf, create_pdf
 
 st.title("🌍 Language Translator AI")
 
+# =========================
 # Language Selection
+# =========================
+
 language = st.selectbox(
     "Select Language",
     ["Tamil", "Hindi", "French", "German"]
 )
 
-# PDF Upload Section
+# =========================
+# PDF Translator
+# =========================
+
 st.header("📄 PDF Translator")
 
 uploaded_file = st.file_uploader(
@@ -48,14 +54,33 @@ if uploaded_file is not None:
             height=200
         )
 
-# Normal Text Translator
+        pdf_file = create_pdf(
+            translated_pdf_text
+        )
+
+        with open(pdf_file, "rb") as file:
+
+            st.download_button(
+                label="📥 Download Translated PDF",
+                data=file,
+                file_name="translated_document.pdf",
+                mime="application/pdf"
+            )
+
+# =========================
+# Text Translator
+# =========================
+
 st.header("📝 Text Translator")
 
 text = st.text_area("Enter English Text")
 
 if st.button("Translate"):
 
-    result = translate_text(text, language)
+    result = translate_text(
+        text,
+        language
+    )
 
     save_translation(
         text,
@@ -65,8 +90,6 @@ if st.button("Translate"):
 
     st.subheader(f"{language} Translation")
     st.write(result)
-
-    # Text To Speech
 
     language_codes = {
         "Tamil": "ta",
@@ -81,11 +104,15 @@ if st.button("Translate"):
     )
 
     with open(audio_file, "rb") as audio:
+
         audio_bytes = audio.read()
 
     st.audio(audio_bytes)
 
+# =========================
 # Translation History
+# =========================
+
 st.divider()
 
 st.subheader("📚 Translation History")

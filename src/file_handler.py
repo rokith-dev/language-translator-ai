@@ -1,5 +1,14 @@
 from pypdf import PdfReader
-from fpdf import FPDF
+
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph
+)
+
+from reportlab.lib.styles import getSampleStyleSheet
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 
 def read_pdf(pdf_file):
@@ -9,6 +18,7 @@ def read_pdf(pdf_file):
     text = ""
 
     for page in reader.pages:
+
         page_text = page.extract_text()
 
         if page_text:
@@ -19,19 +29,27 @@ def read_pdf(pdf_file):
 
 def create_pdf(text):
 
-    pdf = FPDF()
-
-    pdf.add_page()
-
-    pdf.set_font("Arial", size=12)
-
-    lines = text.split("\n")
-
-    for line in lines:
-        pdf.multi_cell(0, 10, line)
-
     file_name = "translated_document.pdf"
 
-    pdf.output(file_name)
+    pdfmetrics.registerFont(
+        TTFont(
+            "TamilFont",
+            "fonts/NotoSansTamil-Regular.ttf"
+        )
+    )
+
+    pdf = SimpleDocTemplate(file_name)
+
+    styles = getSampleStyleSheet()
+
+    style = styles["BodyText"]
+
+    style.fontName = "TamilFont"
+
+    content = [
+        Paragraph(text.replace("\n", "<br/>"), style)
+    ]
+
+    pdf.build(content)
 
     return file_name
