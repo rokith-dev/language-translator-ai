@@ -5,6 +5,10 @@ from src.database import save_translation, get_history
 from src.text_to_speech import text_to_speech
 from src.file_handler import read_pdf, create_pdf
 
+# =========================
+# App Title
+# =========================
+
 st.title("🌍 Language Translator AI")
 
 # =========================
@@ -73,7 +77,10 @@ if uploaded_file is not None:
 
 st.header("📝 Text Translator")
 
-text = st.text_area("Enter English Text")
+text = st.text_area(
+    "Enter English Text",
+    height=150
+)
 
 if st.button("Translate"):
 
@@ -89,6 +96,7 @@ if st.button("Translate"):
     )
 
     st.subheader(f"{language} Translation")
+
     st.write(result)
 
     language_codes = {
