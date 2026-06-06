@@ -168,7 +168,5 @@ Through this project I learned:
 
 Rokith
 
-Aspiring AI Engineer | Data Engineer
-
 GitHub:
 https://github.com/rokith-dev
